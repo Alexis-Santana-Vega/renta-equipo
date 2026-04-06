@@ -24,6 +24,23 @@ const router = createRouter({
           name: 'signup',
           component: () => import('@/pages/auth/SignupPage.vue'),
         },
+        {
+          path: 'otp-verification',
+          name: 'otpVerification',
+          component: () => import('@/pages/auth/OtpVerificationPage.vue'),
+        },
+        // Add reset password route here when implemented
+      ],
+    },
+    {
+      path: '/dashboard',
+      component: () => import('@/layouts/DashboardLayout.vue'),
+      children: [
+        {
+          path: '',
+          name: 'summary',
+          component: () => import('@/pages/dashboard/SummaryPage.vue'),
+        },
       ],
     },
   ],
