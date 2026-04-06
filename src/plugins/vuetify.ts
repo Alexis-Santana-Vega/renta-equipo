@@ -12,15 +12,42 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/styles';
 import { VBtn } from 'vuetify/components/VBtn';
 
+const savedTheme = localStorage.getItem('rentaMedicTheme') || 'system';
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'system',
+    defaultTheme: savedTheme,
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          primary: '#1E3A8A',
+          secondary: '#3B82F6',
+          tertiary: '#10B981',
+          background: '#F3F4F6',
+          surface: '#FFFFFF',
+        },
+      },
+      dark: {
+        dark: true,
+        colors: {},
+      },
+    },
   },
   aliases: {
     VBtnCustom: VBtn,
   },
   defaults: {
+    VAppBar: {
+      density: 'comfortable',
+      VAppBarTitle: {
+        class: 'font-weight-black',
+      },
+    },
+    VNavigationDrawer: {
+      railWidth: 64,
+      order: 1,
+    },
     VBtnCustom: {
       color: 'primary',
       size: 'large',
@@ -35,6 +62,10 @@ export default createVuetify({
     },
     VAvatar: {
       variant: 'tonal',
+    },
+    VList: {
+      density: 'comfortable',
+      slim: true,
     },
     VTextField: {
       density: 'comfortable',

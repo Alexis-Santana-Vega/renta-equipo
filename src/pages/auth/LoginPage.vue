@@ -107,7 +107,7 @@
     // Aquí iría la lógica para manejar el inicio de sesión
     console.log('Iniciando sesión con:', modelForm);
     setTimeout(() => {
-      router.push({ name: 'summary' });
+      router.push({ name: 'otpVerification' });
       emit('loadingChange', false);
     }, 2000);
   };
