@@ -40,13 +40,14 @@ export default createVuetify({
   defaults: {
     VAppBar: {
       density: 'comfortable',
+      elevation: 0,
       VAppBarTitle: {
         class: 'font-weight-black',
       },
     },
     VNavigationDrawer: {
       railWidth: 64,
-      order: 1,
+      class: 'border-0',
     },
     VBtnCustom: {
       color: 'primary',

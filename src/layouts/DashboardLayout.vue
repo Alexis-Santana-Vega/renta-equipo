@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar>
+  <v-app-bar order="2">
     <template #prepend>
       <v-app-bar-nav-icon @click="openDrawer" />
     </template>
@@ -10,26 +10,33 @@
       <v-btn icon="mdi-cart-outline" @click="state.drawerCart = !state.drawerCart"></v-btn>
     </template>
   </v-app-bar>
-  <v-navigation-drawer v-model="state.drawer" :rail="state.rail"></v-navigation-drawer>
+  <v-navigation-drawer v-model="state.drawer" :rail="state.rail" order="1"></v-navigation-drawer>
   <router-view />
 </template>
 <script setup lang="ts">
-  import { onMounted, reactive } from 'vue';
+  import { reactive } from 'vue';
   import { useDisplay } from 'vuetify';
   import ThemeButton from './components/ThemeButton.vue';
   const { mdAndDown, smAndDown } = useDisplay();
   const state = reactive({
-    drawer: false,
+    drawer: true,
     drawerCart: false,
-    rail: false,
+    rail: true,
   });
-  const openDrawer = (): void => {
-    console.log('open drawer');
-  };
   const openDialogSearch = (): void => {
     console.log('open dialog search');
   };
-  onMounted(() => {
+  const openDrawer = (): void => {
+    if (mdAndDown.value) {
+      state.drawer = !state.drawer;
+      state.rail = false;
+    } else {
+      state.rail = !state.rail;
+    }
+  };
+  const initialize = () => {
     state.rail = !mdAndDown.value;
-  });
+    state.drawer = !mdAndDown.value;
+  };
+  initialize();
 </script>
