@@ -7,6 +7,7 @@
         :key="index"
         :value="item.value"
         :active="item.value === selectedTheme.value"
+        rounded="0"
         @click="setTheme(item)"
       >
         <template #prepend>
@@ -18,7 +19,7 @@
   </v-menu>
 </template>
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { ref } from 'vue';
   import { useTheme } from 'vuetify';
   interface Theme {
     name: string;
@@ -49,10 +50,11 @@
     localStorage.setItem('rentaMedicTheme', item.value);
     selectedTheme.value = item;
   };
-  onMounted(() => {
+  const initialize = (): void => {
     const savedTheme = localStorage.getItem('rentaMedicTheme');
     if (savedTheme) {
       selectedTheme.value = themes.find(t => t.value === savedTheme) || themes[0];
     }
-  });
+  };
+  initialize();
 </script>

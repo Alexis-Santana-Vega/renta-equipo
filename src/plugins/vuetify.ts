@@ -12,6 +12,11 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/styles';
 import { VBtn } from 'vuetify/components/VBtn';
 
+const customIcons = {
+  cancel: 'mdi-close-circle-outline',
+  clear: 'mdi-close-circle-outline',
+};
+
 const savedTheme = localStorage.getItem('rentaMedicTheme') || 'system';
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -34,6 +39,12 @@ export default createVuetify({
       },
     },
   },
+  icons: {
+    defaultSet: 'mdi',
+    aliases: {
+      ...customIcons,
+    },
+  },
   aliases: {
     VBtnCustom: VBtn,
   },
@@ -42,7 +53,7 @@ export default createVuetify({
       density: 'comfortable',
       elevation: 0,
       VAppBarTitle: {
-        class: 'font-weight-black',
+        class: 'font-weight-black text-medium-emphasis',
       },
     },
     VNavigationDrawer: {
@@ -66,8 +77,32 @@ export default createVuetify({
     },
     VList: {
       density: 'comfortable',
+      rounded: 'lg',
+      variant: 'flat',
+      color: 'primary',
       slim: true,
+      VListItem: {
+        rounded: 'lg',
+      },
     },
+    VDataTable: {
+      mobile: null,
+      mobileBreakpoint: 'sm',
+    },
+    VPagination: {
+      density: 'comfortable',
+    },
+    VTooltip: {
+      openDelay: 300,
+      closeDalay: 100,
+      location: 'top',
+      contentClass: 'bg-primary font-weight-medium',
+    },
+    VChip: {
+      class: 'text-label-medium',
+      rounded: 'lg',
+    },
+    VChipGroup: {},
     VTextField: {
       density: 'comfortable',
       variant: 'outlined',
