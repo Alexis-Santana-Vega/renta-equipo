@@ -17,7 +17,11 @@ const customIcons = {
   clear: 'mdi-close-circle-outline',
 };
 
-const savedTheme = localStorage.getItem('rentaMedicTheme') || 'system';
+let savedTheme: string | null = localStorage.getItem('rentaMedicTheme');
+if (savedTheme === null) {
+  localStorage.setItem('rentaMedicTheme', 'system');
+  savedTheme = 'system';
+}
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
@@ -31,6 +35,7 @@ export default createVuetify({
           tertiary: '#10B981',
           background: '#F3F4F6',
           surface: '#FFFFFF',
+          question: '#2196F3',
         },
       },
       dark: {
@@ -71,6 +76,13 @@ export default createVuetify({
     },
     VCard: {
       rounded: 'lg',
+      variant: 'flat',
+      VCardTitle: {
+        class: 'font-weight-black text-medium-emphasis',
+      },
+      VCardSubtitle: {
+        class: 'text-label-large',
+      },
     },
     VAvatar: {
       variant: 'tonal',
@@ -90,6 +102,9 @@ export default createVuetify({
       mobileBreakpoint: 'sm',
     },
     VPagination: {
+      density: 'comfortable',
+    },
+    VRow: {
       density: 'comfortable',
     },
     VTooltip: {

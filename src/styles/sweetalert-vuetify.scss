@@ -1,0 +1,51 @@
+:root {
+    --swal2-border-radius-custom: 8px;
+}
+
+div:where(.swal2-container) {
+  z-index: 6000 !important;
+}
+div:where(.swal2-popup) {
+    background-color: rgb(var(--v-theme-surface)) !important;
+    border-radius: var(--swal2-border-radius-custom) !important;
+    color: rgb(var(--v-theme-surface-variant)) !important;
+}
+
+button:where(.swal2-styled) {
+    border-radius: var(--swal2-border-radius-custom) !important;
+    box-shadow: none !important;
+    background-color: rgb(var(--v-theme-primary)) !important;
+    &:where(.swal2-cancel) {
+        background-color: rgba(var(--v-theme-primary), .1) !important;
+        color: rgb(var(--v-theme-primary)) !important;
+    }
+}
+
+div:where(.swal2-icon) {
+    &.swal2-success {
+        border-color: rgb(var(--v-theme-success)) !important;
+        color: rgb(var(--v-theme-success)) !important;
+        [class^='swal2-success-line'] {
+            background-color: rgb(var(--v-theme-success)) !important;
+        }
+    }
+    &.swal2-error {
+        border-color: rgb(var(--v-theme-error)) !important;
+        color: rgb(var(--v-theme-error)) !important;
+        [class^='swal2-x-mark-line'] {
+            background-color: rgb(var(--v-theme-error)) !important;
+        }
+    }
+    &.swal2-warning {
+        border-color: rgb(var(--v-theme-warning)) !important;
+        color: rgb(var(--v-theme-warning)) !important;
+    }
+    &.swal2-info {
+        border-color: rgb(var(--v-theme-info)) !important;
+        color: rgb(var(--v-theme-info)) !important;
+    }
+    &.swal2-question {
+        border-color: rgb(var(--v-theme-question)) !important;
+        color: rgb(var(--v-theme-question)) !important;
+    }
+}

@@ -6,7 +6,7 @@ import { createPinia } from 'pinia';
  *
  * Automatically included in `./src/main.ts`
  */
-
+import '@/styles/sweetalert-vuetify.scss';
 // Types
 import type { App } from 'vue';
 
