@@ -1,0 +1,47 @@
+import type { AuthI18nSchema } from './authEs';
+
+export const authEn: AuthI18nSchema = {
+  auth: {
+    login: {
+      title: 'Sign in',
+      subtitle: 'Sign in to the platform to browse our catalog:',
+      emailLabel: 'Email',
+      emailPlaceholder: 'Enter your email',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      roleLabel: 'Role',
+      rolePlaceholder: 'Enter your role',
+      forgotPassword: 'Forgot your password?',
+      noAccount: 'Do not have an account?',
+      signUpLink: 'Sign up here',
+      submit: 'Login',
+      legalText: 'Medical Equipment Rental for Hospitals and Individuals',
+    },
+    signup: {
+      title: 'Sign up',
+      subtitle: 'Create an account on the platform to browse our catalog:',
+      fullNameLabel: 'Full name',
+      fullNamePlaceholder: 'Enter your full name',
+      emailLabel: 'Email',
+      emailPlaceholder: 'Enter your email',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      confirmPasswordLabel: 'Confirm password',
+      confirmPasswordPlaceholder: 'Enter your password again',
+      alreadyHaveAccount: 'Already have an account?',
+      loginLink: 'Sign in here',
+      submit: 'Sign up',
+      passwordMismatch: 'Passwords do not match',
+      signupSuccess: 'Registration successful',
+      legalText: 'Medical Equipment Rental for Hospitals and Individuals',
+    },
+    otpVerification: {
+      title: 'Verification code',
+      subtitle: 'Enter the verification code we sent to your email:',
+      verify: 'Verify code',
+      notReceived: 'Did not receive the code?',
+      resend: 'Resend code',
+      resentAlert: 'Verification code resent. Please check your email.',
+    },
+  },
+};
