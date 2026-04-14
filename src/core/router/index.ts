@@ -6,12 +6,18 @@
 
 // Composables
 import authRoutes from '@/modules/auth/router';
+import usersRoutes from '@/modules/users/router';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     ...authRoutes,
+    {
+      path: '/dashboard',
+      component: () => import('@/core/layouts/DashboardLayout.vue'),
+      children: [...usersRoutes],
+    },
     /*
     {
       path: '/dashboard',

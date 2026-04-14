@@ -1,18 +1,14 @@
 <template>
-  <v-btn
-    id="language-activator"
-    :icon="selectedLanguage.icon"
-    :title="selectedLanguage.name"
-  ></v-btn>
+  <v-btn id="language-activator" :icon="selectedLanguage.icon" />
   <v-menu activator="#language-activator">
     <v-list>
       <v-list-item
-        v-for="(item, index) in languages"
-        :key="index"
+        v-for="item in languages"
+        :key="item.value"
         :value="item.value"
-        :active="item.value === selectedLanguage.value"
+        :active="item.value === locale"
         rounded="0"
-        @click="setLanguage(item)"
+        @click="setLocale(item.value)"
       >
         <template #prepend>
           <v-icon :icon="item.icon" end />
@@ -22,38 +18,19 @@
     </v-list>
   </v-menu>
 </template>
+
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  interface Language {
-    name: string;
-    value: string;
-    icon: string;
-  }
-  const languages: Language[] = [
-    {
-      name: 'Español',
-      value: 'es',
-      icon: 'mdi-translate',
-    },
-    {
-      name: 'Inglés',
-      value: 'en',
-      icon: 'mdi-translate',
-    },
-  ];
-  const { locale } = useI18n();
-  const selectedLanguage = ref<Language>(languages[0]);
-  const setLanguage = (item: Language): void => {
-    locale.value = item.value;
-    localStorage.setItem('rentaMedicLanguage', item.value);
-    selectedLanguage.value = item;
-  };
-  const initialize = (): void => {
-    const savedLanguage = localStorage.getItem('rentaMedicLanguage');
-    if (savedLanguage) {
-      selectedLanguage.value = languages.find(t => t.value === savedLanguage) || languages[0];
-    }
-  };
-  initialize();
+  import { computed } from 'vue';
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+
+  const { t, locale, setLocale } = useTypedLocale();
+
+  const languages = computed(() => [
+    { value: 'es', icon: 'mdi-translate', name: t('language.es') },
+    { value: 'en', icon: 'mdi-translate', name: t('language.en') },
+  ]);
+
+  const selectedLanguage = computed(
+    () => languages.value.find(l => l.value === locale.value) ?? languages.value[0]
+  );
 </script>

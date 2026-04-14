@@ -9,11 +9,12 @@
           <div
             class="bg-image d-flex flex-column align-center justify-center rounded-lg h-100 text-white"
           >
-            <div class="font-weight-black text-display-medium">RentaMedic</div>
+            <div class="font-weight-black text-display-medium">{{ t('layout.title') }}</div>
             <div class="font-weight-medium text-title-medium">
-              Tu equipo médico, en un solo clic
+              {{ t('layout.subtitle') }}
             </div>
             <div class="mt-4 d-flex ga-2">
+              <language-button />
               <v-avatar icon="mdi-pill" size="large"></v-avatar>
               <v-avatar icon="mdi-medication-outline" size="large"></v-avatar>
               <v-avatar icon="mdi-stethoscope" size="large"></v-avatar>
@@ -39,7 +40,9 @@
 </template>
 <script setup lang="ts">
   import { reactive } from 'vue';
-
+  import LanguageButton from '../components/LanguageButton.vue';
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+  const { t } = useTypedLocale();
   const state = reactive({
     isLoading: false,
   });

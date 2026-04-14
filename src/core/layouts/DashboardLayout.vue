@@ -23,7 +23,7 @@
         :key="index"
         :title="item.title"
         :to="item.to"
-        :active="item.to.name === route.name"
+        :active="item.to.name === router.name"
         rounded="0"
       >
         <template #prepend>
@@ -68,7 +68,7 @@
       </v-list>
     </template>
   </v-navigation-drawer>
-  <slot />
+  <router-view />
 </template>
 <script setup lang="ts">
   import { reactive } from 'vue';
@@ -78,7 +78,7 @@
   import { useRoute } from 'vue-router';
   import RoleButton from '../components/RoleButton.vue';
   import LanguageButton from '../components/LanguageButton.vue';
-  const route = useRoute();
+  const router = useRoute();
   const { mdAndDown } = useDisplay();
   const state = reactive({
     drawer: true,
@@ -86,12 +86,12 @@
     rail: true,
   });
   const menuItems = [
-    { title: 'Inicio', icon: 'mdi-home-outline', to: { name: 'summary' } },
-    { title: 'Buscar', icon: 'mdi-magnify', to: { name: 'search' } },
-    { title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipments' } },
-    { title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'categories' } },
-    { title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
-    { title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },
+    //{ title: 'Inicio', icon: 'mdi-home-outline', to: { name: 'summary' } },
+    //{ title: 'Buscar', icon: 'mdi-magnify', to: { name: 'search' } },
+    //{ title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipments' } },
+    //{ title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'categories' } },
+    //{ title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
+    //{ title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },
     { title: 'Usuarios', icon: 'mdi-account-multiple-outline', to: { name: 'users' } },
   ];
   const openDrawer = (): void => {

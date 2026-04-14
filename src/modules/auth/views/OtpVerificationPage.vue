@@ -42,10 +42,12 @@
   </div>
 </template>
 <script setup lang="ts">
-  import router from '@/core/router';
+  import { useSwal } from '@/shared/composables/useSwal';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   import { computed, ref } from 'vue';
-
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
+  const { toast } = useSwal();
   const { t } = useTypedLocale();
   const emit = defineEmits<{
     loadingChange: [isLoading: boolean];
@@ -66,7 +68,7 @@
     // Aquí iría la lógica para manejar el reenvío del código OTP
     console.log('Reenviando código OTP');
     setTimeout(() => {
-      alert(t('auth.otpVerification.resentAlert'));
+      toast('success', t('auth.otpVerification.resentAlert'));
       emit('loadingChange', false);
     }, 2000);
   };

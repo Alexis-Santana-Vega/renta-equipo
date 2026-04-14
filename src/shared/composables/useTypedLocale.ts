@@ -4,11 +4,15 @@ import { useI18n } from 'vue-i18n';
 const VUETIFY_I18N_PREFIX = '$vuetify.' as const;
 
 export function useTypedLocale() {
-  const locale = useI18n();
+  const { t: vuetifyT, locale } = useI18n();
   function tt(key: I18nKeys, params?: Record<string, unknown>) {
     const fullKey = key.startsWith(VUETIFY_I18N_PREFIX) ? key : `${VUETIFY_I18N_PREFIX}${key}`;
-    return params !== undefined ? locale.t(fullKey, params) : locale.t(fullKey);
+    return params !== undefined ? vuetifyT(fullKey, params) : vuetifyT(fullKey);
   }
-
-  return { ...locale, t: tt };
+  function setLocale(newLocale: string): void {
+    locale.value = newLocale as string;
+    localStorage.setItem('rentaMedicLanguage', newLocale);
+    document.documentElement.lang = newLocale;
+  }
+  return { locale, t: tt, setLocale };
 }

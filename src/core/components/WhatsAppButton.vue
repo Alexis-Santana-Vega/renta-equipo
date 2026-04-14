@@ -7,12 +7,18 @@
     target="_blank"
     rel="noopener noreferrer"
   >
-    Comunícate por WhatsApp
+    {{ t('whatsapp.label') }}
   </v-btn>
 </template>
 <script setup lang="ts">
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+  import { computed } from 'vue';
+
+  const { t } = useTypedLocale();
   const phoneNumber = import.meta.env.VITE_WHATSAPP_PHONE_NUMBER;
-  const message =
-    '¡Buen día! \n\nEstoy interesado en alquilar equipo médico a través de su plataforma. **¿Podrían proporcionarme más información sobre los servicios que ofrecen, los tipos de equipos disponibles?**';
-  const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  const url = computed(() => {
+    const message = t('whatsapp.prefilledMessage');
+    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  });
 </script>

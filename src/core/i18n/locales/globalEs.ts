@@ -24,9 +24,6 @@ export const globalEs = {
     files: 'archivos',
   },
 
-  // ─── Mensajes de validación ─────────────────────────────────────────
-  // Estos reemplazan los strings hardcodeados en validators.ts.
-  // El factory createValidators(t) los usa internamente.
   validation: {
     required: 'Campo requerido',
     requiredLength: 'Campo requerido',
@@ -73,6 +70,49 @@ export const globalEs = {
   layout: {
     title: 'RentaMedic',
     subtitle: 'Tu equipo médico, en un solo clic',
+  },
+
+  language: {
+    label: 'Idioma',
+    es: 'Español',
+    en: 'Inglés',
+  },
+
+  roles: {
+    label: 'Rol',
+    SYSADMIN: 'Sysadmin',
+    ADMIN: 'Administrador',
+    CLIENT: 'Cliente',
+  },
+
+  colorTheme: {
+    label: 'Tema',
+    light: 'Claro',
+    dark: 'Oscuro',
+    system: 'Sistema',
+  },
+
+  whatsapp: {
+    label: 'Comunícate por WhatsApp',
+    prefilledMessage:
+      '¡Buen día! \n\nEstoy interesado en alquilar equipo médico a través de su plataforma. **¿Podrían proporcionarme más información sobre los servicios que ofrecen, los tipos de equipos disponibles?**',
+  },
+
+  search: {
+    inputLabel: 'Buscar equipo',
+    filterBy: 'Puedes filtrar por:',
+    categoriesTitle: 'Categorías',
+
+    categories: {
+      all: 'Todos',
+      neonatal: 'Neonatal',
+      respiratorio: 'Respiratorio',
+      laboratorio: 'Laboratorio',
+      ortopedico: 'Ortopédico',
+      terapeutico: 'Terapéutico',
+      odontologia: 'Odontología',
+      ginecologia: 'Ginecología',
+    },
   },
 };
 

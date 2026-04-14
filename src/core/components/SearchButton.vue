@@ -1,88 +1,112 @@
 <template>
-  <v-btn icon="mdi-magnify" @click="search = true"></v-btn>
+  <v-btn icon="mdi-magnify" @click="search = true" />
   <v-overlay
     v-model="search"
     content-class="w-100 bg-surface pa-4"
     transition="scroll-x-transition"
   >
-    <div class="d-flex align-center flex-column flex-md-row ga-2">
-      <div class="d-flex align-center">
-        <v-img src="@/assets/images/logo.webp" width="48" height="48"></v-img>
-        <div class="font-weight-black text-title-large text-medium-emphasis">RentaMedic</div>
-      </div>
-      <v-form class="w-100" @submit.prevent="handleSearch">
-        <v-text-field
-          v-model="searchModel"
-          label="Buscar equipo"
-          prepend-inner-icon="mdi-magnify"
-          hide-details
-          single-line
-          clearable
-          @click:clear="search = false"
-        >
-        </v-text-field>
-      </v-form>
-    </div>
+    <v-container>
+      <div class="d-flex align-center flex-column flex-md-row ga-2">
+        <div class="d-flex align-center">
+          <v-img src="@/assets/images/logo.webp" width="48" height="48" />
+          <div class="font-weight-black text-title-large text-medium-emphasis">RentaMedic</div>
+        </div>
 
-    <v-divider class="my-4"
-      ><span class="text-medium-emphasis text-label-medium">Puedes filtrar por:</span></v-divider
-    >
-    <div class="d-flex flex-column align-center">
-      <div class="font-weight-black text-title-large text-medium-emphasis">Categorias</div>
-      <v-chip-group
-        v-model="categoryModel"
-        style="width: fit-content"
-        mandatory
-        selected-class="v-chip--selected v-chip--variant-flat bg-primary"
-        @update:model-value="changeCategory"
-      >
-        <v-chip v-for="(item, index) in categories" :key="index" :value="item.value">{{
-          item.title
-        }}</v-chip>
-      </v-chip-group>
-    </div>
+        <v-form class="w-100" @submit.prevent="handleSearch">
+          <v-text-field
+            v-model="searchModel"
+            :label="t('search.inputLabel')"
+            prepend-inner-icon="mdi-magnify"
+            hide-details
+            single-line
+            clearable
+            @click:clear="clearSearch"
+          />
+        </v-form>
+      </div>
+
+      <v-divider class="my-4">
+        <span class="text-medium-emphasis text-label-medium">{{ t('search.filterBy') }}</span>
+      </v-divider>
+
+      <div class="d-flex flex-column align-center">
+        <div class="font-weight-black text-title-large text-medium-emphasis">
+          {{ t('search.categoriesTitle') }}
+        </div>
+        <v-chip-group
+          v-model="categoryModel"
+          style="width: fit-content"
+          mandatory
+          selected-class="v-chip--selected v-chip--variant-flat bg-primary"
+          @update:model-value="changeCategory"
+        >
+          <v-chip v-for="item in categories" :key="item.value" :value="item.value">
+            {{ item.title }}
+          </v-chip>
+        </v-chip-group>
+      </div>
+    </v-container>
   </v-overlay>
 </template>
+
 <script setup lang="ts">
-  import router from '@/core/router';
-  import { nextTick } from 'vue';
-  import { ref } from 'vue';
+  import { ref, computed, nextTick } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+
+  const router = useRouter();
+  const { t } = useTypedLocale();
 
   const search = ref(false);
   const searchModel = ref('');
   const categoryModel = ref('all');
-  const categories = [
-    { title: 'Todos', value: 'all' },
-    { title: 'Neonatal', value: 'neonatal' },
-    { title: 'Respiratorio', value: 'respiratorio' },
-    { title: 'Laboratorio', value: 'laboratorio' },
-    { title: 'Ortopédico', value: 'ortopedico' },
-    { title: 'Terapéutico', value: 'terapeutico' },
-    { title: 'Odontología', value: 'odontologia' },
-    { title: 'Ginecología', value: 'ginecologia' },
-  ];
-  const handleSearch = (): void => {
+
+  const categories = computed(() => [
+    { value: 'all', title: t('search.categories.all') },
+    { value: 'neonatal', title: t('search.categories.neonatal') },
+    { value: 'respiratorio', title: t('search.categories.respiratorio') },
+    { value: 'laboratorio', title: t('search.categories.laboratorio') },
+    { value: 'ortopedico', title: t('search.categories.ortopedico') },
+    { value: 'terapeutico', title: t('search.categories.terapeutico') },
+    { value: 'odontologia', title: t('search.categories.odontologia') },
+    { value: 'ginecologia', title: t('search.categories.ginecologia') },
+  ]);
+
+  function handleSearch(): void {
     router.push({
       name: 'search',
-      query: { product: searchModel.value, category: categoryModel.value || undefined },
+      query: {
+        product: searchModel.value || undefined,
+        category: categoryModel.value || undefined,
+      },
     });
     closeSearch();
-  };
-  // Revisar luego esta función
-  const changeCategory = (): void => {};
-  /*
-  const changeCategory = (): void => {
+  }
+
+  function changeCategory(): void {
     router.push({
       name: 'search',
-      query: { product: searchModel.value || undefined, category: categoryModel.value },
+      query: {
+        product: searchModel.value || undefined,
+        category: categoryModel.value,
+      },
     });
     closeSearch();
-  };
-  */
-  const closeSearch = (): void => {
+  }
+
+  function clearSearch(): void {
+    nextTick(() => {
+      searchModel.value = '';
+      categoryModel.value = 'all';
+      search.value = false;
+    });
+  }
+
+  function closeSearch(): void {
     search.value = false;
     nextTick(() => {
       searchModel.value = '';
+      categoryModel.value = 'all';
     });
-  };
+  }
 </script>

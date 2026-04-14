@@ -70,4 +70,47 @@ export const globalEn: GlobalI18nSchema = {
     title: 'RentaMedic',
     subtitle: 'Your medical equipment, in just one click',
   },
+
+  language: {
+    label: 'Language',
+    es: 'Spanish',
+    en: 'English',
+  },
+
+  roles: {
+    label: 'Role',
+    SYSADMIN: 'Sysadmin',
+    ADMIN: 'Admin',
+    CLIENT: 'Client',
+  },
+
+  colorTheme: {
+    label: 'Theme',
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+  },
+
+  whatsapp: {
+    label: 'Contact us on WhatsApp',
+    prefilledMessage:
+      'Good day! \n\nI am interested in renting medical equipment through your platform. **Could you share more information about your services and the types of equipment available?**',
+  },
+
+  search: {
+    inputLabel: 'Search equipment',
+    filterBy: 'You can filter by:',
+    categoriesTitle: 'Categories',
+
+    categories: {
+      all: 'All',
+      neonatal: 'Neonatal',
+      respiratorio: 'Respiratory',
+      laboratorio: 'Laboratory',
+      ortopedico: 'Orthopedic',
+      terapeutico: 'Therapeutic',
+      odontologia: 'Dentistry',
+      ginecologia: 'Gynecology',
+    },
+  },
 };

@@ -49,7 +49,7 @@
         >
           <router-link
             style="text-decoration: none; color: inherit"
-            :to="{ name: 'otpVerification' }"
+            :to="{ name: 'forgotPassword' }"
             >{{ t('auth.login.forgotPassword') }}</router-link
           >
         </v-col>
@@ -82,11 +82,12 @@
 </template>
 <script setup lang="ts">
   import WhatsAppButton from '@/core/components/WhatsAppButton.vue';
-  import router from '@/core/router';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
-  import { createValidators } from '@/shared/utils/validatos';
+  import { createValidators } from '@/shared/utils/validators';
   import { computed, reactive } from 'vue';
+  import { useRouter } from 'vue-router';
 
+  const router = useRouter();
   const { t } = useTypedLocale();
   const v = createValidators(t);
   const emit = defineEmits<{

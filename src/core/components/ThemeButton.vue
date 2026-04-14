@@ -1,14 +1,15 @@
+<!-- El componente queda limpio -->
 <template>
-  <v-btn id="menu-activator" :icon="selectedTheme.icon" :title="selectedTheme.name"></v-btn>
+  <v-btn id="menu-activator" :icon="selectedTheme.icon" />
   <v-menu activator="#menu-activator">
     <v-list>
       <v-list-item
-        v-for="(item, index) in themes"
-        :key="index"
+        v-for="item in themes"
+        :key="item.value"
         :value="item.value"
-        :active="item.value === selectedTheme.value"
+        :active="item.value === savedValue"
         rounded="0"
-        @click="setTheme(item)"
+        @click="setTheme(item.value)"
       >
         <template #prepend>
           <v-icon :icon="item.icon" end />
@@ -18,43 +19,30 @@
     </v-list>
   </v-menu>
 </template>
+
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { useTheme } from 'vuetify';
-  interface Theme {
-    name: string;
-    value: string;
-    icon: string;
-  }
-  const themes: Theme[] = [
-    {
-      name: 'Claro',
-      value: 'light',
-      icon: 'mdi-weather-sunny',
-    },
-    {
-      name: 'Oscuro',
-      value: 'dark',
-      icon: 'mdi-weather-night',
-    },
-    {
-      name: 'Sistema',
-      value: 'system',
-      icon: 'mdi-theme-light-dark',
-    },
-  ];
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+
+  const { t } = useTypedLocale();
   const theme = useTheme();
-  const selectedTheme = ref<Theme>(themes[0]);
-  const setTheme = (item: Theme): void => {
-    theme.change(item.value);
-    localStorage.setItem('rentaMedicTheme', item.value);
-    selectedTheme.value = item;
-  };
-  const initialize = (): void => {
-    const savedTheme = localStorage.getItem('rentaMedicTheme');
-    if (savedTheme) {
-      selectedTheme.value = themes.find(t => t.value === savedTheme) || themes[0];
-    }
-  };
-  initialize();
+
+  const themes = computed(() => [
+    { value: 'light', icon: 'mdi-weather-sunny', name: t('colorTheme.light') },
+    { value: 'dark', icon: 'mdi-weather-night', name: t('colorTheme.dark') },
+    { value: 'system', icon: 'mdi-theme-light-dark', name: t('colorTheme.system') },
+  ]);
+
+  const savedValue = ref(localStorage.getItem('rentaMedicTheme') ?? 'light');
+
+  const selectedTheme = computed(
+    () => themes.value.find(x => x.value === savedValue.value) ?? themes.value[0]
+  );
+
+  function setTheme(value: string) {
+    savedValue.value = value;
+    localStorage.setItem('rentaMedicTheme', value);
+    theme.change(value);
+  }
 </script>

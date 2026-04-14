@@ -20,6 +20,16 @@ const authRoutes: RouteRecordRaw[] = [
         name: 'otpVerification',
         component: () => import('@/modules/auth/views/OtpVerificationPage.vue'),
       },
+      {
+        path: 'forgot-password',
+        name: 'forgotPassword',
+        component: () => import('@/modules/auth/views/ForgotPasswordPage.vue'),
+      },
+      {
+        path: 'reset-password',
+        name: 'resetPassword',
+        component: () => import('@/modules/auth/views/ResetPasswordPage.vue'),
+      },
       // Add reset password route here when implemented
     ],
   },

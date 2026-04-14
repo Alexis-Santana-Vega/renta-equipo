@@ -41,6 +41,39 @@ export const authEs = {
       resend: 'Reenviar código',
       resentAlert: 'Código OTP reenviado. Por favor, revisa tu correo electrónico.',
     },
+    forgotPassword: {
+      title: '¿Olvidaste tu contraseña?',
+      subtitle:
+        'Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña',
+      emailLabel: 'Correo electrónico',
+      emailPlaceholder: 'Ingresa tu correo electrónico',
+      submit: 'Enviar enlace',
+      rememberPassword: '¿Recordaste tu contraseña?',
+      loginLink: 'Inicia sesión',
+      legalText: 'Renta de Equipo Médico a Hospitales y Particulares',
+    },
+    forgotPasswordCheckEmail: {
+      title: 'Revisa tu correo',
+      subtitle:
+        'Si el correo existe, recibirás un enlace para restablecer tu contraseña.',
+      notReceived: '¿No recibiste el correo?',
+      resendEmail: 'Reenviar correo',
+      useAnotherEmail: 'Usar otro correo',
+      resentAlert: 'Correo reenviado. Por favor, revisa tu bandeja de entrada.',
+    },
+    resetPassword: {
+      title: 'Recupera tu contraseña',
+      subtitle: 'Crea una nueva contraseña para tu cuenta',
+      newPasswordLabel: 'Nueva contraseña',
+      newPasswordPlaceholder: 'Ingresa tu nueva contraseña',
+      confirmPasswordLabel: 'Confirmar contraseña',
+      confirmPasswordPlaceholder: 'Ingresa nuevamente tu nueva contraseña',
+      submit: 'Actualizar contraseña',
+      successAlert: 'Tu contraseña fue actualizada correctamente.',
+      rememberPassword: '¿Recordaste tu contraseña?',
+      loginLink: 'Inicia sesión',
+      legalText: 'Renta de Equipo Médico a Hospitales y Particulares',
+    },
   },
 };
 export type AuthI18nSchema = typeof authEs;

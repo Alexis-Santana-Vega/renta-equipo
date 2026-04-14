@@ -1,14 +1,14 @@
 <template>
-  <v-btn id="role-activator" :icon="selectedRole.icon" :title="selectedRole.name"></v-btn>
+  <v-btn id="role-activator" :icon="selectedRole.icon" />
   <v-menu activator="#role-activator">
     <v-list>
       <v-list-item
-        v-for="(item, index) in roles"
-        :key="index"
+        v-for="item in roles"
+        :key="item.value"
         :value="item.value"
-        :active="item.value === selectedRole.value"
+        :active="item.value === store.role"
         rounded="0"
-        @click="setRole(item)"
+        @click="store.setRole(item.value)"
       >
         <template #prepend>
           <v-icon :icon="item.icon" end />
@@ -18,43 +18,22 @@
     </v-list>
   </v-menu>
 </template>
-<script setup lang="ts">
-  import { useAppStore } from '@/core/stores/appStore';
-  import { ref } from 'vue';
-  interface Role {
-    name: string;
-    value: string;
-    icon: string;
-  }
-  const roles: Role[] = [
-    {
-      name: 'Sysadmin',
-      value: 'SYSADMIN',
-      icon: 'mdi-shield-account-outline',
-    },
 
-    {
-      name: 'Admin',
-      value: 'ADMIN',
-      icon: 'mdi-account-hard-hat-outline',
-    },
-    {
-      name: 'Cliente',
-      value: 'CLIENT',
-      icon: 'mdi-account-outline',
-    },
-  ];
+<script setup lang="ts">
+  import { computed } from 'vue';
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+  import { useAppStore } from '@/core/stores/appStore';
+
+  const { t } = useTypedLocale();
   const store = useAppStore();
-  const selectedRole = ref<Role>(roles[0]);
-  const setRole = (item: Role) => {
-    selectedRole.value = item;
-    store.setRole(item.value);
-  };
-  const initialize = (): void => {
-    const savedRole = store.role;
-    if (savedRole) {
-      selectedRole.value = roles.find(t => t.value === savedRole) || roles[0];
-    }
-  };
-  initialize();
+
+  const roles = computed(() => [
+    { value: 'SYSADMIN', icon: 'mdi-shield-account-outline', name: t('roles.SYSADMIN') },
+    { value: 'ADMIN', icon: 'mdi-account-hard-hat-outline', name: t('roles.ADMIN') },
+    { value: 'CLIENT', icon: 'mdi-account-outline', name: t('roles.CLIENT') },
+  ]);
+
+  const selectedRole = computed(
+    () => roles.value.find(r => r.value === store.role) ?? roles.value[0]
+  );
 </script>
