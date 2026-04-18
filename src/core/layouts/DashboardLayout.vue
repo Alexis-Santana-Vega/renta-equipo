@@ -4,6 +4,12 @@
       <v-app-bar-nav-icon @click="openDrawer" />
     </template>
     <v-app-bar-title>Dashboard</v-app-bar-title>
+    <v-progress-linear
+      :active="state.isLoading"
+      indeterminate
+      location="bottom"
+      absolute
+    ></v-progress-linear>
     <template #append>
       <SearchButton />
       <ThemeButton />
@@ -68,7 +74,11 @@
       </v-list>
     </template>
   </v-navigation-drawer>
-  <router-view />
+  <router-view v-slot="{ Component, route }" @loading-change="state.isLoading = $event">
+    <v-fade-transition mode="out-in">
+      <component :is="Component" :key="route.path"></component>
+    </v-fade-transition>
+  </router-view>
 </template>
 <script setup lang="ts">
   import { reactive } from 'vue';
@@ -84,12 +94,13 @@
     drawer: true,
     drawerCart: false,
     rail: true,
+    isLoading: false,
   });
   const menuItems = [
     //{ title: 'Inicio', icon: 'mdi-home-outline', to: { name: 'summary' } },
     //{ title: 'Buscar', icon: 'mdi-magnify', to: { name: 'search' } },
     //{ title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipments' } },
-    //{ title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'categories' } },
+    { title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'category' } },
     //{ title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
     //{ title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },
     { title: 'Usuarios', icon: 'mdi-account-multiple-outline', to: { name: 'users' } },

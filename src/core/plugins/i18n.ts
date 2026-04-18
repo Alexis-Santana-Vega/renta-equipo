@@ -1,5 +1,6 @@
 import { globalI18nSchema } from '@/core/i18n/locales';
 import { authI18nSchema } from '@/modules/auth/i18n';
+import { categoryI18nSchema } from '@/modules/category/i18n';
 import { createI18n } from 'vue-i18n';
 import { en, es } from 'vuetify/locale';
 
@@ -9,6 +10,7 @@ const messages = {
       ...es,
       ...globalI18nSchema.es,
       ...authI18nSchema.es,
+      ...categoryI18nSchema.es,
     },
   },
   en: {
@@ -16,6 +18,7 @@ const messages = {
       ...en,
       ...globalI18nSchema.en,
       ...authI18nSchema.en,
+      ...categoryI18nSchema.en,
     },
   },
 };

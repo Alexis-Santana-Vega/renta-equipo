@@ -34,6 +34,12 @@ export default [
     },
     rules: {
       'vue/multi-word-component-names': 'warn',
+      'vue/valid-v-slot': [
+        'error',
+        {
+          allowModifiers: true,
+        },
+      ],
     },
   },
   // TypeScript configuración

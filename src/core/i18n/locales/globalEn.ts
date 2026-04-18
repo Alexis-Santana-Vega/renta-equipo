@@ -2,11 +2,6 @@ import type { GlobalI18nSchema } from './globalEs';
 
 export const globalEn: GlobalI18nSchema = {
   common: {
-    save: 'Save',
-    saving: 'Saving...',
-    cancel: 'Cancel',
-    delete: 'Delete',
-    edit: 'Edit',
     create: 'Create',
     search: 'Search',
     loading: 'Loading...',
@@ -16,7 +11,6 @@ export const globalEn: GlobalI18nSchema = {
     confirm: 'Confirm',
     yes: 'Yes',
     no: 'No',
-    actions: 'Actions',
     back: 'Back',
     next: 'Next',
     previous: 'Previous',
@@ -24,6 +18,13 @@ export const globalEn: GlobalI18nSchema = {
     selected: '{count} selected',
     file: 'file',
     files: 'files',
+    //
+    actions: 'Actions',
+    save: 'Save',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    edit: 'Edit',
+    requiredFields: '* Marked fields are required',
   },
 
   validation: {

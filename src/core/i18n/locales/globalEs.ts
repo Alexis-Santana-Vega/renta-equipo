@@ -1,10 +1,5 @@
 export const globalEs = {
   common: {
-    save: 'Guardar',
-    saving: 'Guardando...',
-    cancel: 'Cancelar',
-    delete: 'Eliminar',
-    edit: 'Editar',
     create: 'Crear',
     search: 'Buscar',
     loading: 'Cargando...',
@@ -14,7 +9,6 @@ export const globalEs = {
     confirm: 'Confirmar',
     yes: 'Sí',
     no: 'No',
-    actions: 'Acciones',
     back: 'Volver',
     next: 'Siguiente',
     previous: 'Anterior',
@@ -22,6 +16,13 @@ export const globalEs = {
     selected: '{count} seleccionado(s)',
     file: 'archivo',
     files: 'archivos',
+    //
+    actions: 'Acciones',
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    delete: 'Eliminar',
+    edit: 'Editar',
+    requiredFields: '* Los campos marcados son obligatorios',
   },
 
   validation: {
