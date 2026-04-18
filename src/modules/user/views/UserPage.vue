@@ -1,11 +1,25 @@
 <template>
-  <v-container>
-    <div>{{ t('auth.login.forgotPassword') }}</div>
-    <div>{{ t('$vuetify.calendar.moreEvents', { name: 'red' }) }}</div>
+  <v-container fluid>
+    <v-row>
+      <v-col v-for="(item, i) in summary" :key="i" cols="12" sm="12" md="6" lg="3" xl="3">
+        <summary-card-v3
+          :text="item.text"
+          :number="item.number"
+          :icon="item.icon"
+          :color="item.color"
+        ></summary-card-v3>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script setup lang="ts">
-  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
+  import { ref } from 'vue';
+  import SummaryCardV3 from '@/shared/components/SummaryCardV3.vue';
 
-  const { t } = useTypedLocale();
+  const summary = ref([
+    { text: 'Total', number: '6', icon: 'mdi-table-check', color: 'secondary' },
+    { text: 'Disponibles', number: '3', icon: 'mdi-check-circle-outline', color: 'success' },
+    { text: 'Rentados', number: '2', icon: 'mdi-table-cancel', color: 'warning' },
+    { text: 'Mantenimiento', number: '1', icon: 'mdi-close-circle-outline', color: 'error' },
+  ]);
 </script>
