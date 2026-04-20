@@ -1,151 +1,118 @@
 <template>
-  <v-card color="background" class="h-100 d-flex flex-column">
-    <!-- Area de camara -->
-    <div
-      ref="wrapperRef"
-      :class="{ fullscreen }"
-      style="overflow: hidden; aspect-ratio: 1/1; background: #000"
-      @fullscreenchange="onFullscreenChange"
-    >
+  <v-dialog
+    :model-value="modelValue"
+    persistent
+    scrollable
+    :width="width"
+    :fullscreen="isCompact"
+    transition="slide-y-reverse-transition"
+    @update:model-value="emit('update:modelValue', $event)"
+  >
+    <v-card :rounded="isCompact ? '0' : 'lg'">
+      <!-- Area de camara -->
       <div
-        class="position-absolute bottom-0 right-0 left-0 mb-1 mx-1"
-        style="overflow: hidden; z-index: 3"
+        ref="wrapperRef"
+        :class="{ fullscreen: isFullscreen }"
+        style="overflow: hidden; aspect-ratio: 2/3; background: #000"
+        @fullscreenchange="onFullscreenChange"
       >
-        <v-alert
-          v-if="cameraError"
-          color="warning"
-          class="mt-2"
-          icon="mdi-alert-circle-outline"
-          :text="cameraError"
+        <div
+          class="position-absolute bottom-0 right-0 left-0 mb-1 mx-1"
+          style="overflow: hidden; z-index: 3"
         >
-        </v-alert>
-      </div>
-      <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
-        <v-btn
-          v-if="torchSupported"
-          variant="text"
-          color="white"
-          icon="mdi-flash-outline"
-          @click="torchActive = !torchActive"
-        />
-        <v-btn
-          variant="text"
-          color="white"
-          :icon="fullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
-          @click="toggleFullscreen"
-        />
-      </div>
-      <div class="position-absolute ml-1 mt-1" style="z-index: 3">
-        <v-btn variant="text" color="white" icon="mdi-close" @click="closeScanner" />
-      </div>
-      <qrcode-stream
-        :paused="paused"
-        :torch="torchActive"
-        :constraints="selectedConstraints"
-        :formats="selectedBarcodeFormats"
-        @error="onError"
-        @detect="onDetect"
-        @camera-on="onCameraReady"
-      >
-        <!-- Animación de escaneo -->
-        <div v-if="!loading" class="h-100 w-100 d-flex align-center justify-center overlay pb-4">
-          <div class="scanner">
-            <div class="corner top-left" />
-            <div class="corner top-right" />
-            <div class="corner bottom-left" />
-            <div class="corner bottom-right" />
-          </div>
+          <v-alert
+            v-if="cameraError"
+            color="warning"
+            class="mt-2"
+            icon="mdi-alert-circle-outline"
+            :text="cameraError"
+          >
+          </v-alert>
         </div>
-      </qrcode-stream>
-
-      <!-- ─── Dialog: equipo escaneado ─────────────────────────────── -->
-      <v-dialog
-        :model-value="dialogEquipment"
-        width="500"
-        scrollable
-        persistent
-        :attach="wrapperRef ?? undefined"
-        @after-enter="focusQuantity"
-      >
-        <card-dialog
-          icon="mdi-hospital-box-outline"
-          :title="t('scanner.dialog.title')"
-          @close="closeDialog"
+        <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
+          <v-btn
+            v-if="torchSupported"
+            variant="text"
+            color="white"
+            icon="mdi-flash-outline"
+            @click="torchActive = !torchActive"
+          />
+          <v-btn
+            variant="text"
+            color="white"
+            :icon="isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
+            @click="toggleFullscreen"
+          />
+        </div>
+        <div class="position-absolute ml-1 mt-1" style="z-index: 3">
+          <v-btn variant="text" color="white" icon="mdi-close" @click="emit('close')" />
+        </div>
+        <qrcode-stream
+          :paused="paused"
+          :torch="torchActive"
+          :constraints="selectedConstraints"
+          :formats="selectedBarcodeFormats"
+          @error="onError"
+          @detect="onDetect"
+          @camera-on="onCameraReady"
         >
-          <card-form>
-            <v-form ref="formRef" v-model="formValid" @submit.prevent="addEquipment">
-              <v-row dense>
-                <v-col cols="12" class="text-center">
-                  <v-avatar size="64">
-                    <v-img :src="equipmentForm.photoUrl" />
-                  </v-avatar>
-                  <div class="text-body-1 font-weight-bold text-medium-emphasis my-2">
-                    {{ equipmentForm.name }}
-                  </div>
-                </v-col>
-
-                <v-col cols="12">
-                  <v-text-field
-                    ref="quantityFieldRef"
-                    v-model.number="equipmentForm.quantity"
-                    :label="t('scanner.dialog.quantity')"
-                    type="number"
-                    min="1"
-                    :rules="formRules.quantity"
-                    @keypress="onlyIntegerKeypress"
-                  />
-                </v-col>
-
-                <v-col cols="12" class="d-flex justify-end flex-wrap ga-2">
-                  <btn-custom variant="tonal" @click="closeDialog">
-                    {{ t('scanner.dialog.cancel') }}
-                  </btn-custom>
-                  <btn-custom type="submit" :disabled="!formValid">
-                    {{ t('scanner.dialog.add') }}
-                  </btn-custom>
-                </v-col>
-              </v-row>
-            </v-form>
-          </card-form>
-        </card-dialog>
-      </v-dialog>
-    </div>
-  </v-card>
+          <!-- Animación de escaneo -->
+          <div v-if="!loading" class="h-100 w-100 d-flex align-center justify-center overlay pb-4">
+            <div class="scanner">
+              <div class="corner top-left" />
+              <div class="corner top-right" />
+              <div class="corner bottom-left" />
+              <div class="corner bottom-right" />
+            </div>
+          </div>
+        </qrcode-stream>
+      </div>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, watch, nextTick } from 'vue';
+  import { ref, computed, watch } from 'vue';
   import { QrcodeStream } from 'vue-qrcode-reader';
   import { useTypedLocale } from '@/shared/composables/useTypedLocale';
-  import { createValidators } from '@/shared/utils/validators';
-  //import { fakeApiGetUser } from '@/services/equipment.service'; // reemplaza fakeApi
   import beepSound from '@/assets/audio/beep.mp3';
   import type {
     BarcodeFormats,
     DetectedCode,
     CameraOption,
-    EquipmentForm,
-    AddEquipmentPayload,
     CameraCapabilities,
   } from '@/shared/types/ScannerPickerTypes';
+  import { useDisplay } from 'vuetify';
 
   // ─── i18n y validators ───────────────────────────────────────────────
 
   const { t } = useTypedLocale();
-  const v = createValidators(t);
+  const props = withDefaults(
+    defineProps<{
+      modelValue: boolean;
+      fullscreen?: boolean;
+      width?: string;
+    }>(),
+    {
+      width: '500',
+      fullscreen: false,
+    }
+  );
+  const { smAndDown } = useDisplay();
+
+  const isCompact = computed(() => props.fullscreen || smAndDown.value);
 
   // ─── Emits ───────────────────────────────────────────────────────────
 
   const emit = defineEmits<{
-    addEquipment: [payload: AddEquipmentPayload];
-    closeScanner: [];
+    (e: 'update:modelValue', value: boolean): void;
+    (e: 'close'): void;
+    (e: 'detectedCode', value: string): void;
   }>();
 
   // ─── Refs de template ────────────────────────────────────────────────
 
   const wrapperRef = ref<HTMLElement | null>(null);
-  const formRef = ref();
-  const quantityFieldRef = ref<{ focus: () => void; select: () => void } | null>(null);
 
   // ─── Estado: escáner ─────────────────────────────────────────────────
 
@@ -161,34 +128,12 @@
 
   // ─── Estado: pantalla completa ───────────────────────────────────────
 
-  const fullscreen = ref(false);
+  const isFullscreen = ref(false);
 
-  watch(fullscreen, enter => {
+  watch(isFullscreen, enter => {
     if (enter) requestFullscreen();
     else exitFullscreen();
   });
-
-  // ─── Estado: formulario de equipo ────────────────────────────────────
-
-  const formValid = ref(false);
-  const dialogEquipment = ref(false);
-
-  const defaultEquipmentForm: EquipmentForm = {
-    productId: '',
-    name: '',
-    photoUrl: '',
-    quantity: 1,
-  };
-  const equipmentForm = ref<EquipmentForm>({ ...defaultEquipmentForm });
-
-  const formRules = computed(() => ({
-    quantity: [
-      v.required(),
-      v.onlyNumbers(t('scanner.dialog.quantity')),
-      v.minNumber(1, t('scanner.dialog.quantity')),
-      v.maxNumber(30, t('scanner.dialog.quantity')),
-    ],
-  }));
 
   // ─── Estado: cámara y formatos ───────────────────────────────────────
 
@@ -222,7 +167,7 @@
   // ─── Fullscreen ───────────────────────────────────────────────────────
 
   function toggleFullscreen(): void {
-    fullscreen.value = !fullscreen.value;
+    isFullscreen.value = !isFullscreen.value;
   }
 
   type FullscreenElement = HTMLElement & {
@@ -264,7 +209,7 @@
 
   function onFullscreenChange(): void {
     // Sincroniza el estado cuando el usuario sale con ESC o botón físico
-    fullscreen.value = document.fullscreenElement !== null;
+    isFullscreen.value = document.fullscreenElement !== null;
   }
 
   // ─── Cámara ───────────────────────────────────────────────────────────
@@ -302,7 +247,7 @@
     try {
       //const result = await fakeApiGetUser(scannedCode.value);
       //equipmentForm.value = { ...result, quantity: 1 };
-      dialogEquipment.value = true;
+      emit('detectedCode', scannedCode.value);
     } catch {
       // Notificación inline en lugar de plugin global
       cameraError.value = t('scanner.errors.codeNotFound');
@@ -310,46 +255,6 @@
     } finally {
       scannedCode.value = '';
     }
-  }
-
-  // ─── Formulario ───────────────────────────────────────────────────────
-
-  /**
-   * Bloquea caracteres no enteros en el campo de cantidad.
-   * Solo permite dígitos — sin punto decimal ni signo negativo.
-   */
-  function onlyIntegerKeypress(event: KeyboardEvent): void {
-    if (!/^\d$/.test(event.key)) event.preventDefault();
-  }
-
-  async function focusQuantity(): Promise<void> {
-    await nextTick();
-    quantityFieldRef.value?.focus();
-    quantityFieldRef.value?.select();
-  }
-
-  function addEquipment(): void {
-    const payload: AddEquipmentPayload = {
-      id: crypto.randomUUID(), // nativo, reemplaza $randomUUID()
-      productId: equipmentForm.value.productId,
-      name: equipmentForm.value.name,
-      quantity: equipmentForm.value.quantity,
-      codeValid: true,
-    };
-    emit('addEquipment', payload);
-    closeDialog();
-  }
-
-  function closeDialog(): void {
-    dialogEquipment.value = false;
-    paused.value = false;
-    nextTick(() => {
-      equipmentForm.value = { ...defaultEquipmentForm };
-    });
-  }
-
-  function closeScanner(): void {
-    emit('closeScanner');
   }
 </script>
 

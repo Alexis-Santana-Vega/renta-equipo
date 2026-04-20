@@ -11,9 +11,7 @@
       </v-col>
       <v-col cols="12">
         <v-btn-custom @click="scanner = true">Abrir Scanner</v-btn-custom>
-        <v-dialog :model-value="scanner" persistent scrollable width="600" rounded="lg">
-          <scanner-picker @close-scanner="scanner = false"></scanner-picker>
-        </v-dialog>
+        <scanner-picker v-model="scanner" @close="scanner = false"></scanner-picker>
       </v-col>
     </v-row>
   </v-container>
