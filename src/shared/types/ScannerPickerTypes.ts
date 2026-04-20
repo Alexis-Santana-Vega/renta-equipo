@@ -1,33 +1,3 @@
-/** Lo que devuelve el servicio al resolver un código escaneado */
-export interface ScannedEquipmentResponse {
-  productId: string;
-  name: string;
-  photoUrl: string;
-}
-
-// ─── Form ─────────────────────────────────────────────────────────────
-
-/** Estado del formulario de cantidad */
-export interface EquipmentForm {
-  productId: string;
-  name: string;
-  photoUrl: string;
-  quantity: number;
-}
-
-// ─── Emit ─────────────────────────────────────────────────────────────
-
-/** Payload que se emite al padre al confirmar el equipo */
-export interface AddEquipmentPayload {
-  id: string;
-  productId: string;
-  name: string;
-  quantity: number;
-  codeValid: boolean;
-}
-
-// ─── Scanner ──────────────────────────────────────────────────────────
-
 /** Formato de código de barras soportado */
 export interface BarcodeFormats {
   code_128: boolean;

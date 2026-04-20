@@ -47,6 +47,7 @@
         <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
           <v-btn variant="text" color="white" icon="mdi-close" @click="emit('close')" />
         </div>
+        <!-- Area de scanner (video) -->
         <qrcode-stream
           :paused="paused"
           :torch="torchActive"
@@ -84,9 +85,24 @@
   } from '@/shared/types/ScannerPickerTypes';
   import { useDisplay } from 'vuetify';
 
-  // ─── i18n y validators ───────────────────────────────────────────────
+  type FullscreenElement = HTMLElement & {
+    mozRequestFullScreen?: () => Promise<void> | void;
+    webkitRequestFullscreen?: () => Promise<void> | void;
+    msRequestFullscreen?: () => Promise<void> | void;
+  };
 
-  const { t } = useTypedLocale();
+  type FullscreenDocument = Document & {
+    mozCancelFullScreen?: () => Promise<void> | void;
+    webkitExitFullscreen?: () => Promise<void> | void;
+    msExitFullscreen?: () => Promise<void> | void;
+  };
+
+  const emit = defineEmits<{
+    (e: 'update:modelValue', value: boolean): void;
+    (e: 'close'): void;
+    (e: 'detectedCode', value: string): void;
+  }>();
+
   const props = withDefaults(
     defineProps<{
       modelValue: boolean;
@@ -99,46 +115,26 @@
     }
   );
   const { smAndDown } = useDisplay();
-
   const isCompact = computed(() => props.fullscreen || smAndDown.value);
-
-  // ─── Emits ───────────────────────────────────────────────────────────
-
-  const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void;
-    (e: 'close'): void;
-    (e: 'detectedCode', value: string): void;
-  }>();
-
-  // ─── Refs de template ────────────────────────────────────────────────
-
+  const { t } = useTypedLocale();
+  // Referencia y estado para fullscreen
   const wrapperRef = ref<HTMLElement | null>(null);
-
-  // ─── Estado: escáner ─────────────────────────────────────────────────
-
+  const isFullscreen = ref(false);
+  // Estado del scanner
   const paused = ref(false);
   const loading = ref(true);
   const cameraError = ref('');
   const scannedCode = ref('');
-
-  // ─── Estado: linterna ────────────────────────────────────────────────
-
+  // Estado del flash
   const torchActive = ref(false);
   const torchSupported = ref(false);
-
-  // ─── Estado: pantalla completa ───────────────────────────────────────
-
-  const isFullscreen = ref(false);
-
+  // Watcher para fullscreen
   watch(isFullscreen, enter => {
     if (enter) requestFullscreen();
     else exitFullscreen();
   });
-
-  // ─── Estado: cámara y formatos ───────────────────────────────────────
-
+  // Estado de la camara
   const selectedConstraints = ref<CameraOption['constraints']>({ facingMode: 'environment' });
-
   const barcodeFormats = ref<BarcodeFormats>({
     code_128: true,
     code_39: true,
@@ -153,66 +149,46 @@
     upc_a: true,
     upc_e: false,
   });
-
   const selectedBarcodeFormats = computed(() =>
     (Object.keys(barcodeFormats.value) as (keyof BarcodeFormats)[]).filter(
       format => barcodeFormats.value[format]
     )
   );
-
-  // ─── Audio ───────────────────────────────────────────────────────────
-
+  // Audio
   const audioScanner = new Audio(beepSound);
 
-  // ─── Fullscreen ───────────────────────────────────────────────────────
-
+  /** Cambiar estado de fullscreen */
   function toggleFullscreen(): void {
     isFullscreen.value = !isFullscreen.value;
   }
 
-  type FullscreenElement = HTMLElement & {
-    mozRequestFullScreen?: () => Promise<void> | void;
-    webkitRequestFullscreen?: () => Promise<void> | void;
-    msRequestFullscreen?: () => Promise<void> | void;
-  };
-
-  type FullscreenDocument = Document & {
-    mozCancelFullScreen?: () => Promise<void> | void;
-    webkitExitFullscreen?: () => Promise<void> | void;
-    msExitFullscreen?: () => Promise<void> | void;
-  };
-
   function requestFullscreen(): void {
     const el = wrapperRef.value as FullscreenElement | null;
     if (!el) return;
-
     const fn =
       el.requestFullscreen ??
       el.mozRequestFullScreen ??
       el.webkitRequestFullscreen ??
       el.msRequestFullscreen;
-
     fn?.call(el);
   }
 
   function exitFullscreen(): void {
     const doc = document as FullscreenDocument;
-
     const fn =
       doc.exitFullscreen ??
       doc.mozCancelFullScreen ??
       doc.webkitExitFullscreen ??
       doc.msExitFullscreen;
-
     fn?.call(doc);
   }
 
+  /** Sincroniza el estado cuando el usuario sale con ESC o botón físico */
   function onFullscreenChange(): void {
-    // Sincroniza el estado cuando el usuario sale con ESC o botón físico
     isFullscreen.value = document.fullscreenElement !== null;
   }
 
-  // ─── Cámara ───────────────────────────────────────────────────────────
+  /** Inicializar camara */
   async function onCameraReady(capabilities: Partial<CameraCapabilities>): Promise<void> {
     try {
       torchSupported.value = capabilities.torch === true;
@@ -224,6 +200,7 @@
     }
   }
 
+  /** Manejar errores de la camara */
   function onError(err: Error): void {
     const errorMap: Record<string, string> = {
       NotAllowedError: t('scanner.errors.notAllowed'),
@@ -237,16 +214,12 @@
     cameraError.value = errorMap[err.name] ?? t('scanner.errors.generic');
   }
 
-  // ─── Detección ────────────────────────────────────────────────────────
-
+  /** Detección de código. Emite el código encontrado */
   async function onDetect([firstDetectedCode]: DetectedCode[]): Promise<void> {
     scannedCode.value = firstDetectedCode.rawValue.trim();
     paused.value = true;
     audioScanner.play();
-
     try {
-      //const result = await fakeApiGetUser(scannedCode.value);
-      //equipmentForm.value = { ...result, quantity: 1 };
       emit('detectedCode', scannedCode.value);
     } catch {
       // Notificación inline en lugar de plugin global
