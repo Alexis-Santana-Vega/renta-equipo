@@ -115,6 +115,26 @@ export const globalEs = {
       ginecologia: 'Ginecología',
     },
   },
+
+  scanner: {
+    cameraLabel: 'Cámara {index}',
+    dialog: {
+      title: 'Información',
+      quantity: 'Cantidad *',
+      cancel: 'Cancelar',
+      add: 'Agregar',
+    },
+    errors: {
+      notAllowed: 'Por favor, permite el acceso a la cámara.',
+      notFound: 'No se encontró cámara en tu dispositivo.',
+      notSupported: 'Esta función requiere una conexión segura (usa HTTPS).',
+      notReadable: 'No se puede usar la cámara. ¿Está en uso por otra app?',
+      overconstrained: 'Tu cámara no es compatible.',
+      streamApi: 'Tu navegador no permite usar la cámara.',
+      generic: 'Ocurrió un error al intentar acceder a la cámara.',
+      codeNotFound: 'Código no reconocido',
+    },
+  },
 };
 
 export type GlobalI18nSchema = typeof globalEs;

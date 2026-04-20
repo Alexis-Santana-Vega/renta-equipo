@@ -9,13 +9,21 @@
           :color="item.color"
         ></summary-card-v3>
       </v-col>
+      <v-col cols="12">
+        <v-btn-custom @click="scanner = true">Abrir Scanner</v-btn-custom>
+        <v-dialog :model-value="scanner" persistent scrollable width="600">
+          <scanner-picker></scanner-picker>
+        </v-dialog>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue';
   import SummaryCardV3 from '@/shared/components/SummaryCardV3.vue';
+  import ScannerPicker from '@/shared/components/ScannerPicker/ScannerPicker.vue';
 
+  const scanner = ref(false);
   const summary = ref([
     { text: 'Total', number: '6', icon: 'mdi-table-check', color: 'secondary' },
     { text: 'Disponibles', number: '3', icon: 'mdi-check-circle-outline', color: 'success' },

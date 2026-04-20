@@ -134,6 +134,10 @@ export default createVuetify({
       location: 'top',
       contentClass: 'bg-primary font-weight-medium rounded-lg',
     },
+    VAlert: {
+      rounded: 'lg',
+      density: 'comfortable',
+    },
     VChip: {
       class: 'text-label-medium',
       rounded: 'lg',

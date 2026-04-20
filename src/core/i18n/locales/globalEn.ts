@@ -114,4 +114,24 @@ export const globalEn: GlobalI18nSchema = {
       ginecologia: 'Gynecology',
     },
   },
+
+  scanner: {
+    cameraLabel: 'Camera {index}',
+    dialog: {
+      title: 'Information',
+      quantity: 'Quantity *',
+      cancel: 'Cancel',
+      add: 'Add',
+    },
+    errors: {
+      notAllowed: 'Please allow access to the camera.',
+      notFound: 'No camera found on your device.',
+      notSupported: 'This feature requires a secure connection (use HTTPS).',
+      notReadable: 'Cannot use the camera. Is it in use by another app?',
+      overconstrained: 'Your camera is not compatible.',
+      streamApi: 'Your browser does not allow camera access.',
+      generic: 'An error occurred while trying to access the camera.',
+      codeNotFound: 'Code not recognized',
+    },
+  },
 };
