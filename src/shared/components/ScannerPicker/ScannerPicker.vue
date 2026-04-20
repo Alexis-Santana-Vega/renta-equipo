@@ -7,61 +7,53 @@
       style="overflow: hidden; aspect-ratio: 1/1; background: #000"
       @fullscreenchange="onFullscreenChange"
     >
+      <div
+        class="position-absolute bottom-0 right-0 left-0 mb-1 mx-1"
+        style="overflow: hidden; z-index: 3"
+      >
+        <v-alert
+          v-if="cameraError"
+          color="warning"
+          class="mt-2"
+          icon="mdi-alert-circle-outline"
+          :text="cameraError"
+        >
+        </v-alert>
+      </div>
+      <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
+        <v-btn
+          v-if="torchSupported"
+          variant="text"
+          color="white"
+          icon="mdi-flash-outline"
+          @click="torchActive = !torchActive"
+        />
+        <v-btn
+          variant="text"
+          color="white"
+          :icon="fullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
+          @click="toggleFullscreen"
+        />
+      </div>
+      <div class="position-absolute ml-1 mt-1" style="z-index: 3">
+        <v-btn variant="text" color="white" icon="mdi-close" @click="closeScanner" />
+      </div>
       <qrcode-stream
         :paused="paused"
         :torch="torchActive"
         :constraints="selectedConstraints"
-        :track="paintCustom"
         :formats="selectedBarcodeFormats"
         @error="onError"
         @detect="onDetect"
         @camera-on="onCameraReady"
       >
-        <div
-          class="position-absolute bottom-0 right-0 left-0 mb-1 mx-1"
-          style="overflow: hidden; z-index: 3"
-        >
-          <v-tabs v-model="selectedConstraints" align-tabs="center" color="white">
-            <v-tab v-for="(item, i) in cameraOptions" :key="i" :value="item.constraints">
-              {{ t('scanner.cameraLabel', { index: i + 1 }) }}
-            </v-tab>
-          </v-tabs>
-
-          <v-alert
-            v-if="cameraError"
-            color="warning"
-            class="mt-2"
-            icon="mdi-alert-circle-outline"
-            :text="cameraError"
-          >
-          </v-alert>
-        </div>
-        <div class="position-absolute right-0 mr-1 mt-1" style="z-index: 3">
-          <v-btn
-            v-if="torchSupported"
-            variant="text"
-            color="white"
-            icon="mdi-flash-outline"
-            @click="torchActive = !torchActive"
-          />
-          <v-btn
-            variant="text"
-            color="white"
-            :icon="fullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
-            @click="toggleFullscreen"
-          />
-        </div>
-        <div class="position-absolute ml-1 mt-1" style="z-index: 3">
-          <v-btn variant="text" color="white" icon="mdi-close" @click="closeScanner" />
-        </div>
-
         <!-- Animación de escaneo -->
         <div v-if="!loading" class="h-100 w-100 d-flex align-center justify-center overlay pb-4">
           <div class="scanner">
-            <div class="corner top-left" :class="{ 'corner-highlight': scanAnimation }" />
-            <div class="corner top-right" :class="{ 'corner-highlight': scanAnimation }" />
-            <div class="corner bottom-left" :class="{ 'corner-highlight': scanAnimation }" />
-            <div class="corner bottom-right" :class="{ 'corner-highlight': scanAnimation }" />
+            <div class="corner top-left" />
+            <div class="corner top-right" />
+            <div class="corner bottom-left" />
+            <div class="corner bottom-right" />
           </div>
         </div>
       </qrcode-stream>
@@ -159,7 +151,6 @@
 
   const paused = ref(false);
   const loading = ref(true);
-  const scanAnimation = ref(false);
   const cameraError = ref('');
   const scannedCode = ref('');
 
@@ -202,11 +193,6 @@
   // ─── Estado: cámara y formatos ───────────────────────────────────────
 
   const selectedConstraints = ref<CameraOption['constraints']>({ facingMode: 'environment' });
-
-  const cameraOptions = ref<CameraOption[]>([
-    { label: 'rear camera', constraints: { facingMode: 'environment' } },
-    { label: 'front camera', constraints: { facingMode: 'user' } },
-  ]);
 
   const barcodeFormats = ref<BarcodeFormats>({
     code_128: true,
@@ -284,12 +270,6 @@
   // ─── Cámara ───────────────────────────────────────────────────────────
   async function onCameraReady(capabilities: Partial<CameraCapabilities>): Promise<void> {
     try {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(({ kind }) => kind === 'videoinput');
-      cameraOptions.value = videoDevices.map(({ deviceId, label }) => ({
-        label: label || `Device ${deviceId.slice(0, 6)}`,
-        constraints: { deviceId },
-      }));
       torchSupported.value = capabilities.torch === true;
       cameraError.value = '';
     } catch (err) {
@@ -317,7 +297,6 @@
   async function onDetect([firstDetectedCode]: DetectedCode[]): Promise<void> {
     scannedCode.value = firstDetectedCode.rawValue.trim();
     paused.value = true;
-    scanAnimation.value = true;
     audioScanner.play();
 
     try {
@@ -329,20 +308,7 @@
       cameraError.value = t('scanner.errors.codeNotFound');
       paused.value = false;
     } finally {
-      scanAnimation.value = false;
       scannedCode.value = '';
-    }
-  }
-
-  // ─── Track personalizado ──────────────────────────────────────────────
-
-  function paintCustom(detectedCodes: DetectedCode[], ctx: CanvasRenderingContext2D): void {
-    for (const {
-      boundingBox: { x, y, width, height },
-    } of detectedCodes) {
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.strokeRect(x, y, width, height);
     }
   }
 
@@ -454,21 +420,5 @@
     border-left: none;
     border-top: none;
     border-radius: 0 0 24px 0;
-  }
-
-  .corner-highlight {
-    animation: cornerFlash 0.3s ease-out;
-  }
-
-  @keyframes cornerFlash {
-    0%,
-    100% {
-      width: 50px;
-      height: 50px;
-    }
-    50% {
-      width: 0;
-      height: 0;
-    }
   }
 </style>
