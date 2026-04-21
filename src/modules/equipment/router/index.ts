@@ -4,7 +4,7 @@ const equipmentRoutes: RouteRecordRaw[] = [
   {
     path: 'equipment',
     name: 'equipment',
-    component: () => import('@/modules/equipment/views/EquipmentsPage.vue'),
+    component: () => import('@/modules/equipment/views/EquipmentPage.vue'),
   },
 ];
 
