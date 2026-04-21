@@ -1,11 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-const categoryRoutes: RouteRecordRaw[] = [
+const equipmentRoutes: RouteRecordRaw[] = [
   {
     path: 'equipment',
     name: 'equipment',
-    component: () => import('@/modules/category/views/CategoryPage.vue'),
+    component: () => import('@/modules/equipment/views/EquipmentsPage.vue'),
   },
 ];
 
-export default categoryRoutes;
+export default equipmentRoutes;

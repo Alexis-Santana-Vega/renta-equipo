@@ -99,7 +99,7 @@
   const menuItems = [
     //{ title: 'Inicio', icon: 'mdi-home-outline', to: { name: 'summary' } },
     //{ title: 'Buscar', icon: 'mdi-magnify', to: { name: 'search' } },
-    //{ title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipments' } },
+    { title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipment' } },
     { title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'category' } },
     //{ title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
     //{ title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },

@@ -7,6 +7,7 @@
 // Composables
 import authRoutes from '@/modules/auth/router';
 import categoryRoutes from '@/modules/category/router';
+import equipmentRoutes from '@/modules/equipment/router';
 import userRoutes from '@/modules/user/router';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -17,7 +18,7 @@ const router = createRouter({
     {
       path: '/dashboard',
       component: () => import('@/core/layouts/DashboardLayout.vue'),
-      children: [...categoryRoutes, ...userRoutes],
+      children: [...categoryRoutes, ...userRoutes, ...equipmentRoutes],
     },
     /*
     {
