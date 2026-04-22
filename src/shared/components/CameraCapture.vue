@@ -28,7 +28,7 @@
         @click="toggleFlash"
       />
 
-      <div class="bg-background" style="aspect-ratio: 3/4; overflow: hidden">
+      <div class="bg-background" style="overflow: hidden">
         <video
           ref="videoRef"
           autoplay
@@ -129,9 +129,15 @@
         cameraError.value = t('imagePicker.camera.errors.notSupported');
         return;
       }
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: 'environment' },
+        },
+      });
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(d => d.kind === 'videoinput');
 
+      stream.getTracks().forEach(track => track.stop());
       if (!videoDevices.length) {
         cameraError.value = t('imagePicker.camera.errors.noDevices');
         return;
