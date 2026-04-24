@@ -82,5 +82,11 @@ export const equipmentEn: EquipmentI18nSchema = {
       productDeleted: 'Product deleted successfully',
       providerSaved: 'Provider saved successfully',
     },
+    status: {
+      available: 'Available',
+      occupied: 'Occupied',
+      suspended: 'Suspended',
+      maintenance: 'Maintenance',
+    },
   },
 };

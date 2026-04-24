@@ -80,6 +80,12 @@ export const equipmentEs = {
       productDeleted: 'Producto eliminado con éxito',
       providerSaved: 'Proveedor guardado con éxito',
     },
+    status: {
+      available: 'Disponible',
+      occupied: 'Ocupado',
+      suspended: 'Suspendido',
+      maintenance: 'Mantenimiento',
+    },
   },
 };
 

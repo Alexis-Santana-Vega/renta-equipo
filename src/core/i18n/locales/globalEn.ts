@@ -62,9 +62,13 @@ export const globalEn: GlobalI18nSchema = {
   },
 
   nav: {
-    home: 'Home',
-    settings: 'Settings',
-    profile: 'My profile',
+    equipment: 'Equipments',
+    category: 'Categories',
+    supplier: 'Suppliers',
+    inbound: 'Inbounds',
+    outbound: 'Outbounds',
+    user: 'Users',
+    logout: 'Logout',
   },
 
   layout: {

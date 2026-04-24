@@ -68,7 +68,9 @@
                 </template>
 
                 <template #item.status="{ value }">
-                  <v-chip :color="productStatusColor(value.toUpperCase())">{{ value }}</v-chip>
+                  <v-chip :color="productStatusColor(value.toUpperCase())">{{
+                    productStatusText(value)
+                  }}</v-chip>
                 </template>
 
                 <template #item.actions="{ item }">
@@ -385,6 +387,16 @@
       OCUPADO: 'warning',
       SUSPENDIDO: 'error',
       MANTENIMIENTO: 'info',
+    };
+    return map[status.toUpperCase()] ?? 'default';
+  }
+
+  function productStatusText(status: string): string {
+    const map: Record<string, string> = {
+      DISPONIBLE: t('equipment.status.available'),
+      OCUPADO: t('equipment.status.occupied'),
+      SUSPENDIDO: t('equipment.status.suspended'),
+      MANTENIMIENTO: t('equipment.status.maintenance'),
     };
     return map[status.toUpperCase()] ?? 'default';
   }

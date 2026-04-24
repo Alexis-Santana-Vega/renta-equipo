@@ -63,7 +63,7 @@
           <template #prepend>
             <v-icon icon="mdi-logout" class="ml-1"></v-icon>
           </template>
-          <v-list-item-title>Cerrar sesión</v-list-item-title>
+          <v-list-item-title>{{ t('nav.logout') }}</v-list-item-title>
           <v-tooltip
             v-if="state.rail"
             activator="parent"
@@ -81,13 +81,14 @@
   </router-view>
 </template>
 <script setup lang="ts">
-  import { reactive } from 'vue';
+  import { computed, reactive } from 'vue';
   import { useDisplay } from 'vuetify';
   import ThemeButton from '../components/ThemeButton.vue';
   import SearchButton from '../components/SearchButton.vue';
   import { useRoute } from 'vue-router';
   import RoleButton from '../components/RoleButton.vue';
   import LanguageButton from '../components/LanguageButton.vue';
+  import { useTypedLocale } from '@/shared/composables/useTypedLocale';
   const router = useRoute();
   const { mdAndDown } = useDisplay();
   const state = reactive({
@@ -96,16 +97,17 @@
     rail: true,
     isLoading: false,
   });
-  const menuItems = [
+  const { t } = useTypedLocale();
+  const menuItems = computed(() => [
     //{ title: 'Inicio', icon: 'mdi-home-outline', to: { name: 'summary' } },
     //{ title: 'Buscar', icon: 'mdi-magnify', to: { name: 'search' } },
-    { title: 'Equipos', icon: 'mdi-desktop-classic', to: { name: 'equipment' } },
-    { title: 'Categorías', icon: 'mdi-tag-outline', to: { name: 'category' } },
-    { title: 'Proveedores', icon: 'mdi-handshake-outline', to: { name: 'supplier' } },
-    { title: 'Entradas', icon: 'mdi-elevator-down', to: { name: 'inbound' } },
-    //{ title: 'Salidas', icon: 'mdi-elevator-up', to: { name: 'outbound' } },
-    { title: 'Usuarios', icon: 'mdi-account-multiple-outline', to: { name: 'user' } },
-  ];
+    { title: t('nav.equipment'), icon: 'mdi-desktop-classic', to: { name: 'equipment' } },
+    { title: t('nav.category'), icon: 'mdi-tag-outline', to: { name: 'category' } },
+    { title: t('nav.supplier'), icon: 'mdi-handshake-outline', to: { name: 'supplier' } },
+    { title: t('nav.inbound'), icon: 'mdi-elevator-down', to: { name: 'inbound' } },
+    //{ title: t('nav.outbound'), icon: 'mdi-elevator-up', to: { name: 'outbound' } },
+    { title: t('nav.user'), icon: 'mdi-account-multiple-outline', to: { name: 'user' } },
+  ]);
   const openDrawer = (): void => {
     if (mdAndDown.value) {
       state.drawer = !state.drawer;

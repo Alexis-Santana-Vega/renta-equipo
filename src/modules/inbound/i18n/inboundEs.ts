@@ -17,6 +17,10 @@ export const inboundEs = {
       edit: 'Editar Entrada',
       delete: 'Eliminar Entrada',
       expand: 'Expandir Detalles',
+      discardEquipment: 'Descartar entrada',
+      generateInbound: 'Generar Entrada',
+      scanEquipment: 'Escanear Equipo',
+      addEquipmentManually: 'Agregar Equipo Manualmente',
     },
     dialog: {
       titleNew: 'Nueva Entrada',
@@ -32,6 +36,7 @@ export const inboundEs = {
       supplier: 'Proveedor *',
       note: 'Nota',
       invoiceAmount: 'Monto de Factura *',
+      equipmentTitle: 'Recepción de Equipo',
       headers: {
         barcode: 'Código de Barras',
         name: 'Nombre del Equipo',
@@ -44,6 +49,8 @@ export const inboundEs = {
       inboundUpdated: 'Entrada editada con éxito',
       inboundDeleted: 'Entrada eliminada con éxito',
       inboundDeletedError: 'Error al eliminar la entrada',
+      equipmentNotFound: 'Equipo no encontrado',
+      entryDiscarded: 'Entrada descartada',
     },
     type: {
       transfer: 'Transferencia',

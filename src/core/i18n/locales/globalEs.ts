@@ -63,9 +63,13 @@ export const globalEs = {
   },
 
   nav: {
-    home: 'Inicio',
-    settings: 'Configuración',
-    profile: 'Mi perfil',
+    equipment: 'Equipos',
+    category: 'Categorías',
+    supplier: 'Proveedores',
+    inbound: 'Entradas',
+    outbound: 'Salidas',
+    user: 'Usuario',
+    logout: 'Cerrar Sesión',
   },
 
   layout: {

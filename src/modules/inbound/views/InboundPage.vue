@@ -8,9 +8,9 @@
       <v-row density="compact">
         <v-col cols="12" sm="12" md="6" lg="8" xl="9">
           <IteratorHeader>
-            <v-btn-custom prepend-icon="mdi-plus" :block="smAndDown" @click="openInbound()"
-              >Nueva Entrada</v-btn-custom
-            >
+            <v-btn-custom prepend-icon="mdi-plus" :block="smAndDown" @click="openInbound()">{{
+              t('inbound.actions.add')
+            }}</v-btn-custom>
           </IteratorHeader>
         </v-col>
         <v-col cols="12" sm="12" md="6" lg="4" xl="3">
@@ -39,7 +39,7 @@
               <v-chip variant="text">{{ value }}</v-chip>
             </template>
             <template #item.inboundType="{ value }">
-              <v-chip :prepend-icon="inboundTypeIcon(value)">{{ value }}</v-chip>
+              <v-chip :prepend-icon="inboundTypeIcon(value)">{{ inboundTypeText(value) }}</v-chip>
             </template>
             <template #item.invoiceAmount="{ value }">
               <v-icon icon="mdi-cash" color="success" class="mr-2"></v-icon>
@@ -67,7 +67,7 @@
       <v-form v-model="state.validForm" @submit.prevent>
         <v-row>
           <v-col cols="12">
-            <FormCard icon="mdi-elevator-down" title="Recepción de Equipo">
+            <FormCard icon="mdi-elevator-down" :title="t('inbound.form.equipmentTitle')">
               <v-row>
                 <v-col cols="12" sm="12" md="2" lg="2" xl="2">
                   <v-text-field
@@ -200,7 +200,7 @@
                 <template #item.actions="{ item }">
                   <TooltipButton
                     icon="mdi-delete-outline"
-                    text="Descartar entrada"
+                    :text="t('inbound.actions.discardEquipment')"
                     color="error"
                     :disabled="isEditing"
                     @click="deleteEquipment(item)"
@@ -210,11 +210,13 @@
             </FormCard>
           </v-col>
           <v-col v-if="!isEditing" cols="12">
-            <v-btn-custom :disabled="!isValidForm">Generar Entrada</v-btn-custom>
+            <v-btn-custom :disabled="!isValidForm" @click="saveInbound">{{
+              t('inbound.actions.generateInbound')
+            }}</v-btn-custom>
           </v-col>
         </v-row>
       </v-form>
-      <v-tooltip v-if="!isEditing" text="Escanear Equipo">
+      <v-tooltip v-if="!isEditing" :text="t('inbound.actions.scanEquipment')">
         <template #activator="{ props: activatorProps }">
           <v-btn
             icon="mdi-barcode-scan"
@@ -227,7 +229,7 @@
           ></v-btn>
         </template>
       </v-tooltip>
-      <v-tooltip v-if="!isEditing" text="Agregar Equipo Manualmente">
+      <v-tooltip v-if="!isEditing" :text="t('inbound.actions.addEquipmentManually')">
         <template #activator="{ props: activatorProps }">
           <v-btn
             icon="mdi-plus"
@@ -292,6 +294,14 @@
     return map[inboundType] ?? 'default';
   }
 
+  function inboundTypeText(inboundType: string): string {
+    const map: Record<string, string> = {
+      PURCHASE: t('inbound.type.purchase'),
+      TRANSFER: t('inbound.type.transfer'),
+    };
+    return map[inboundType] ?? '';
+  }
+
   const mapInboundToLight = (inbound: InboundForm): InboundLightResponse => {
     return {
       id: inbound.id,
@@ -310,10 +320,10 @@
 
   const state = reactive({
     search: '',
+    loadingInboundForm: false,
     dialogInbound: false,
     dialogScanner: false,
     loadingTable: false,
-    loadingOverlay: false,
     validForm: false,
   });
   const inboundItems = ref<InboundLightResponse[]>([]);
@@ -321,7 +331,7 @@
     id: '',
     folio: '',
     inboundType: 'PURCHASE',
-    datetime: '',
+    datetime: new Date().toISOString().slice(0, 16),
     invoiceAmount: '',
     originLocationId: '',
     supplierId: '',
@@ -432,7 +442,7 @@
         m => m.barcode === barcode
       );
       if (!equipmentScanner) {
-        toast('warning', 'Equipo no encontrado');
+        toast('warning', t('inbound.notifications.equipmentNotFound'));
         return;
       }
       editedInbound.value.equipment[index] = { ...equipmentScanner, quantity: 1 };
@@ -468,7 +478,7 @@
     editedInbound.value.equipment = editedInbound.value.equipment.filter(
       i => i.barcode !== item.barcode
     );
-    toast('success', 'Entrada descartada');
+    toast('success', t('inbound.notifications.entryDiscarded'));
   };
 
   const initialize = () => {
@@ -504,10 +514,21 @@
       m => m.barcode === barcode
     );
     if (!equipmentScanner) {
-      toast('warning', 'Equipo no encontrado');
+      toast('warning', t('inbound.notifications.equipmentNotFound'));
       return;
     }
     editedInbound.value.equipment.push({ ...equipmentScanner, quantity: 1 });
+    toast('success', equipmentScanner.name);
+  };
+
+  const saveInbound = () => {
+    state.loadingInboundForm = true;
+    setTimeout(() => {
+      const lightResult = mapInboundToLight(editedInbound.value);
+      inboundItems.value.push({ ...lightResult, folio: 'INB-0006' });
+      state.loadingInboundForm = false;
+      closeInboundDialog();
+    }, 1000);
   };
 
   onMounted(initialize);
