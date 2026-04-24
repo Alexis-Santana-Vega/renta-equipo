@@ -8,6 +8,7 @@
 import authRoutes from '@/modules/auth/router';
 import categoryRoutes from '@/modules/category/router';
 import equipmentRoutes from '@/modules/equipment/router';
+import inboundRoutes from '@/modules/inbound/router';
 import supplierRoutes from '@/modules/supplier/router';
 import userRoutes from '@/modules/user/router';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -19,7 +20,13 @@ const router = createRouter({
     {
       path: '/dashboard',
       component: () => import('@/core/layouts/DashboardLayout.vue'),
-      children: [...categoryRoutes, ...userRoutes, ...equipmentRoutes, ...supplierRoutes],
+      children: [
+        ...categoryRoutes,
+        ...userRoutes,
+        ...equipmentRoutes,
+        ...supplierRoutes,
+        ...inboundRoutes,
+      ],
     },
     /*
     {
