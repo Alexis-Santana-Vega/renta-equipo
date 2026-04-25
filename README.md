@@ -1,6 +1,6 @@
 # Rentamedic
 
-Rentamedic es una aplicación web desarrollada con **Vue.js 3** que facilita la renta y venta de equipo médico de forma rápida, segura y accesible. Conecta a proveedores con personas, clínicas y empresas que requieren equipos como concentradores de oxígeno, camas hospitalarias, monitores y otros dispositivos especializados, ya sea de manera temporal o permanente. A través de una plataforma intuitiva, los usuarios pueden explorar el catálogo, comparar opciones, consultar disponibilidad y gestionar pedidos en pocos pasos. Rentamedic reduce tiempos y costos, garantizando calidad, confiabilidad y soporte en cada transacción.
+Rentamedic es una aplicación web desarrollada con **Vue.js 3** que facilita la renta y venta de equipo médico de forma rápida, segura y accesible. Conecta a personas, clínicas y empresas que requieren equipos como concentradores de oxígeno, camas hospitalarias, monitores y otros dispositivos especializados, ya sea de manera temporal o permanente. A través de una plataforma intuitiva, los usuarios pueden explorar el catálogo, comparar opciones, consultar disponibilidad y gestionar pedidos en pocos pasos. Rentamedic reduce tiempos y costos, garantizando calidad, confiabilidad y soporte en cada transacción.
 
 ## 🚀 Características
 
